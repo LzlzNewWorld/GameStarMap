@@ -8,8 +8,8 @@ var Game = function (starMap) {
             if(star){
                 _players[player.getId()] = player;
                 player.addStar(star);
+                return this;
             }
-            return this;
         },
         getPlayer: playerID => _players[playerID],
     };
