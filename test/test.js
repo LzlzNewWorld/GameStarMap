@@ -1,7 +1,7 @@
-var Game = require('./game/Game');
-var StarMap = require('./game/StarMap');
-var Player = require('./game/Player');
-var Ship = require('./game/Ship');
+var Game = require('../game_model/Game');
+var StarMap = require('../game_model/StarMap');
+var Player = require('../game_model/Player');
+var Ship = require('../game_model/Ship');
 
 var g = new Game();
 g.starMap = new StarMap().loadStars('test1.json');
