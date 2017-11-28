@@ -1,23 +1,24 @@
 const MAX_PLAYERS =20;
+
 var Game = function (starMap) {
-    var _playerCount = 0;
-    var _players = {};
+    this.playerCount = 0;
     this.starMap = starMap;
+    this.players = {};
     this.__proto__ = {
         //new 一个player需要属性：id,name
         addPlayer: player => {
-            if(_playerCount>=MAX_PLAYERS)
+            if(this.playerCountt>=MAX_PLAYERS)
                 return false;
             var star = this.starMap.getOwnerlessStar();
             if(star){
-                _players[player.getId()] = player;
+                this.players[player.getId()] = player;
                 player.addStar(star);
-                _playerCount++;
+                this.playerCount++;
                 return true;
             }
             return false;
         },
-        getPlayer: playerID => _players[playerID],
+        getPlayer: playerID => this.players[playerID],
     };
 }
 module.exports = Game;

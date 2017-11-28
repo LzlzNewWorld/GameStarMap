@@ -20,16 +20,20 @@ const MAX_ENERGY = 500;//能量值上限
 const MIN_ENERGY = 10;//能量值下限
 const MAX_MATERIALS = 500;//材料值上限
 const MIN_MATERIALS = 10;//材料值下限
-const STARS_AMOUNT = 256;//星球总数
+const STARS_AMOUNT = 10;//星球总数
 
 
 var StarMap = function () {
-    var _stars = {};
+    this.stars = {};
     this.__proto__ = {
-        initStars: () => {
+        initStars: data => {
+            this.stars=data;
+            return this;
+        },
+        createStars : ()=> {
             for (var i = 0; i < STARS_AMOUNT; i++) {
                 var name = 'S' + i.toString(32);
-                _stars[name] = {
+                this.stars[name] = {
                     name,
                     capacity:{
                         energy: Math.round(Math.random() * (MAX_ENERGY - MIN_ENERGY) + MIN_ENERGY),
@@ -43,10 +47,10 @@ var StarMap = function () {
             };
             return this;
         },
-        getStar : name => _stars[name],
+        getStar : name => this.stars[name],
         getOwnerlessStar:()=>{
-            for (starCode in _stars) {
-                var star = _stars[starCode];
+            for (starCode in this.stars) {
+                var star = this.stars[starCode];
                 if (!star.owner) {
                     return star;
                 }
@@ -56,13 +60,13 @@ var StarMap = function () {
         //测试用方法
         saveStars: fileName => {
             if (!fileName) return;
-            fs.writeFileSync(__dirname + '/data/map/' + fileName, JSON.stringify(_stars));
+            fs.writeFileSync(__dirname + '/data/map/' + fileName, JSON.stringify(this.stars));
             return this;
         },
         loadStars: (fileName) => {
             if (!fileName) return;
             var data = fs.readFileSync(__dirname + '/data/map/' + fileName)
-            _stars= JSON.parse(data.toString());
+            this.stars= JSON.parse(data.toString());
             return this;
         },
     };

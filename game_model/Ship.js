@@ -54,8 +54,14 @@ const shipType = {
 }
 
 var Ship = function (type) {
-    this.properties = type;
-
+    this.type = type.name;
+    this.speed = type.speed;
+    this.detection = type.detection;
+    this.energyConsumptionPerLy = type.energyConsumptionPerLy;
+    this.capacity = type.capacity;
+    this.load ={};
+    this.ATK = type.ATK;
+    this.DEF = type.DEF;
 };
 Ship.type = shipType;
 
