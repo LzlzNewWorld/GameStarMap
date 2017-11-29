@@ -4,7 +4,7 @@ RDS_HOST = '111.231.14.53',    //服务器IP  要连接的A服务器redis
 RDS_OPTS = {
     password:'QWERDF595182653QWERDF595182653',
     db:15,//相当于select 
-    prefix:'GAMESTARMAP_'//所有key的前缀
+    // prefix:'GAMESTARMAP_'//所有key的前缀（这个不要用，会带来额外的麻烦）
 },//设置项
 client =  redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS);
 //redis的客户端会自动重新连接，所以不需要重新启动服务器
