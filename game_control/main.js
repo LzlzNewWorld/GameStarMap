@@ -28,25 +28,28 @@ var GameControl=function(){
             redisClient.keys(GAME_PERFIX,(err,key)=>{
                 if(err) return false;
                 for(i in key){
-                    redisClient.hmget(key[i],'playerCount','starMap','players',(err,data)=>{
+                    redisClient.hmget(key[i],'starMap','players',(err,data)=>{
                         if(err) return false;
                         var starMap = new StarMap();
                         var game = new Game(starMap);
-                        game.playerCount = data[0];
-                        starMap.stars = data[1];
-                        game.players = data[2];
+                        starMap.stars = data[0];
+                        game.players = data[1];
+                        game.playerCount=0;
+                        for(key in game.players){
+                            ++game.playerCount;
+                        }
                         games[key[i]] = game;
                     })
                 }
             })
-            _games = games;
+            _games = games;//所有数据加载完成赋值给 _games
             return true;
         },
         save = ()=>{//保存数据到redis
             for(name in _games){
                 var game = _games[name];
                 redisClient.hmset(name,{
-                    playerCount:game.playerCount,
+                    saveTime: new Date()+"",
                     starMap:JSON.stringify(game.starMap.stars),
                     players:JSON.stringify(game.players),
                 });
