@@ -7,7 +7,7 @@ var Game = function (starMap) {
     this.__proto__ = {
         //new 一个player需要属性：id,name
         addPlayer: player => {
-            if(this.playerCountt>=MAX_PLAYERS)
+            if(this.playerCount>=MAX_PLAYERS)
                 return false;
             var star = this.starMap.getOwnerlessStar();
             if(star){

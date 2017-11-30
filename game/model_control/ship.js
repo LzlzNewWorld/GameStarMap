@@ -1,6 +1,7 @@
+//类别
 const shipType = {
     "C1": {
-        name: "C-1",
+        name: "C1",
         consumption: {
             energy: 100,
             material: 100,
@@ -17,7 +18,7 @@ const shipType = {
         DEF: 10,
     },
     "F1": {
-        name: "F-1",
+        name: "F1",
         consumption: {
             energy: 30,
             material: 10,
@@ -34,7 +35,7 @@ const shipType = {
         DEF: 5,
     },
     "R1": {
-        name: "R-1",
+        name: "R1",
         consumption: {
             energy: 10,
             material: 10,
@@ -52,21 +53,21 @@ const shipType = {
     },
 
 }
-
-var Ship = function (type) {
-    this.type = type.name;
-    this.maxSpeed = type.speed;
-    this.detection = type.detection;
-    this.energyConsumptionPerLy = type.energyConsumptionPerLy;
-    this.capacity = type.capacity;
-    this.load = {};
-    this.ATK = type.ATK;
-    this.DEF = type.DEF;
-    this.v = 0;//初始速度
-    this.__proto__ = {
-
+var Ship ={
+    createShip : (type)=>{
+        var ship ={};
+        ship.type = type.name;
+        ship.maxSpeed = type.speed;
+        ship.detection = type.detection;
+        ship.energyConsumptionPerLy = type.energyConsumptionPerLy;
+        ship.capacity = type.capacity;
+        ship.load = {};
+        ship.ATK = type.ATK;
+        ship.DEF = type.DEF;
+        ship.v = 0;//初始速度
+        return ship;
     }
-};
+}
 Ship.type = shipType;
 
 module.exports = Ship;

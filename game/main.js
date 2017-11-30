@@ -1,11 +1,11 @@
 /**
- * 游戏主要控制逻辑，数据通过redis存储
+ * 游戏主要控制逻辑
  * 
  */
-const Game = require('../game_model/Game');
-const Player = require('../game_model/Player');
-const Ship = require('../game_model/Ship');
-const StarMap = require('../game_model/StarMap');
+const Game = require('./model/game');
+const Player = require('./model/player');
+const Ship = require('./model/ship');
+const StarMap = require('./model/starMap');
 
 const redisClient = require('../redisConnect');
 require('../util/dateFormat');
@@ -18,12 +18,19 @@ var GameControl = function () {
     this.__proto__ = {
         getGame: name => this.games[name],
         createGame: () => {
-            var game = new Game(new StarMap().createStars());
+            var game = {
+                playerCount : 0,
+                starMap : StarMap.createStarMap(),
+                players : {}
+            }
             this.games[GAME_PERFIX + new Date().format('yyMMddhhmmssS')] = game;
             return game;
         },
         addPlayer: (gameName, playerId, playerName) => {
-            this.getGame(gameName).addPlayer(new Player(playerId,playerName));
+            var game = this.getGame(gameName)
+            var star = StarMap.getOwnerlessStar(game.starMap);
+            var player = Player.createPlayer(playerId, playerName);
+            Game.addPlayer(this.getGame(gameName), star, player);
         },
         load: callback => {//从redis加载数据
             this.games = {};
@@ -35,9 +42,9 @@ var GameControl = function () {
                 multi.exec((err, data) => {
                     for (var i in data) {
                         var gameData = data[i];
-                        var starMap = new StarMap();
-                        var game = new Game(starMap);
-                        starMap.stars = JSON.parse(gameData[0]);
+                        var game = {};
+                        var starMap = JSON.parse(gameData[0]);
+                        game.starMap = starMap;
                         game.players = JSON.parse(gameData[1]);
                         game.playerCount = 0;
                         for (j in game.players) {
@@ -55,7 +62,7 @@ var GameControl = function () {
                 var game = this.games[name];
                 redisClient.hmset(name, {
                     saveTime: new Date() + "",
-                    starMap: JSON.stringify(game.starMap.stars),
+                    starMap: JSON.stringify(game.starMap),
                     players: JSON.stringify(game.players),
                 });
             }
@@ -63,4 +70,5 @@ var GameControl = function () {
     }
 }
 var instance = new GameControl();
+require('./schedule')(instance);//添加时间控制
 module.exports = instance;

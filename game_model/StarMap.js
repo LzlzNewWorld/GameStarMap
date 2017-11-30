@@ -12,7 +12,7 @@
  * 从json加载数据
  * 
  */
-const fs = require("fs");
+// const fs = require("fs");
 
 //参数 
 const MAP_SIZE = 20 * 10000;//10^-4光年
@@ -57,18 +57,18 @@ var StarMap = function () {
             };
             return null;
         },
-        //测试用方法
-        saveStars: fileName => {
-            if (!fileName) return;
-            fs.writeFileSync(__dirname + '/data/map/' + fileName, JSON.stringify(this.stars));
-            return this;
-        },
-        loadStars: (fileName) => {
-            if (!fileName) return;
-            var data = fs.readFileSync(__dirname + '/data/map/' + fileName)
-            this.stars= JSON.parse(data.toString());
-            return this;
-        },
+        // //测试用方法
+        // saveStars: fileName => {
+        //     if (!fileName) return;
+        //     fs.writeFileSync(__dirname + '/data/map/' + fileName, JSON.stringify(this.stars));
+        //     return this;
+        // },
+        // loadStars: (fileName) => {
+        //     if (!fileName) return;
+        //     var data = fs.readFileSync(__dirname + '/data/map/' + fileName)
+        //     this.stars= JSON.parse(data.toString());
+        //     return this;
+        // },
     };
 };
 StarMap.move= (x0, y0, x1, y1) => {//当前位置 目的地 坐标

@@ -10,16 +10,17 @@ module.exports = function (id, name) {
         getId: () => this.id,
         getName: () => this.name,
         getShip: name => this.ships[name],
-        addShip: (name, ship) => {
+        addShip: (name, ship, star) => {
             if(this.ships[name])
-                return null;
+                return false;
+            ship.position = star.position;
             this.ships[name] = ship; 
-            return this;
+            return true;
         },
         addStar: star => {
             star.ownerId = this.id;
             this.stars.push(star.name); 
-            return this;
+            return true;
         },
         build: (star, production) => {
 
