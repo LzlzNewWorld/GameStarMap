@@ -14,7 +14,7 @@ var Game = {
         if (game.playerCount >= MAX_PLAYERS)
             return false;
         if(star){
-            game.players[player.getId()] = player;
+            game.players[player.id] = player;
             player.stars.push(star.name);
             game.playerCount++;
             return true;

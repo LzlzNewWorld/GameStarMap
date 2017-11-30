@@ -2,10 +2,12 @@
  * 游戏主要控制逻辑
  * 
  */
-const Game = require('./model/game');
-const Player = require('./model/player');
-const Ship = require('./model/ship');
-const StarMap = require('./model/starMap');
+const Game = require('./model_control/game');
+const Player = require('./model_control/player');
+const Ship = require('./model_control/ship');
+const StarMap = require('./model_control/starMap');
+
+const GameCalendar = require('./calendar');
 
 const redisClient = require('../redisConnect');
 require('../util/dateFormat');
@@ -19,6 +21,7 @@ var GameControl = function () {
         getGame: name => this.games[name],
         createGame: () => {
             var game = {
+                createTime : new Date(),
                 playerCount : 0,
                 starMap : StarMap.createStarMap(),
                 players : {}
@@ -37,7 +40,7 @@ var GameControl = function () {
             redisClient.keys(GAME_PERFIX + '*', (err, key) => {
                 var multi = redisClient.multi();
                 for (i in key) {
-                    multi.hmget(key[i], 'starMap', 'players')
+                    multi.hmget(key[i], 'starMap', 'players','createTime')
                 }
                 multi.exec((err, data) => {
                     for (var i in data) {
@@ -47,6 +50,8 @@ var GameControl = function () {
                         game.starMap = starMap;
                         game.players = JSON.parse(gameData[1]);
                         game.playerCount = 0;
+                        game.creatTime = gameData[2];
+                        game.calendar = new GameCalendar(gameData[2])
                         for (j in game.players) {
                             ++game.playerCount;
                         }
@@ -61,6 +66,7 @@ var GameControl = function () {
             for (name in this.games) {
                 var game = this.games[name];
                 redisClient.hmset(name, {
+                    createTime : game.creatTime,
                     saveTime: new Date() + "",
                     starMap: JSON.stringify(game.starMap),
                     players: JSON.stringify(game.players),

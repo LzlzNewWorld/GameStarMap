@@ -13,5 +13,6 @@ var gameSchedule = function (gameControl) {
             gameControl.save();
         })
     })();
+
 }
 module.exports = gameSchedule
