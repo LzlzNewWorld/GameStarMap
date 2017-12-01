@@ -19,6 +19,7 @@ var Player = {
         if (this.ships[name])
             return false;
         ship.position = star.position;
+        ship.name = name;
         this.ships[name] = ship;
         return true;
     },

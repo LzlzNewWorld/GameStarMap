@@ -1,4 +1,5 @@
-var gameControl = require('../game/main');
+var gameControl = require('../game/mainControl');
+var calendar = require('../game/calendar');
 
 // var game = gameControl.createGame();
 // console.log(game);
@@ -7,7 +8,9 @@ gameControl.load(()=>{
     var game = gameControl.getGame('GAMESTARMAP_171129145631795');
     // gameControl.addPlayer('GAMESTARMAP_171129145631795',1,'abcde');
     console.dir(game);
-    console.log(game.calendar.getGameYear());
+    var time = game.calendar.getGameTime();
+    var realTime = game.calendar.getRealTime(time);
+    console.log(time,realTime);
     gameControl.save();
 });
 

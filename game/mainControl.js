@@ -15,17 +15,13 @@ require('../util/dateFormat');
 const GAME_PERFIX = 'GAMESTARMAP_';//gamecontrol创建games json数据key的前缀
 
 var GameControl = function () {
+    var buildObject =  (Type,data) => {var obj = new Type();for(i in data){obj[i] =data[i]} return obj}
     var _initialized = false;
     this.games = {};
     this.__proto__ = {
         getGame: name => this.games[name],
         createGame: () => {
-            var game = {
-                createTime : new Date(),
-                playerCount : 0,
-                starMap : StarMap.createStarMap(),
-                players : {}
-            }
+            var game = Game.createGame(StarMap.createStarMap());
             this.games[GAME_PERFIX + new Date().format('yyMMddhhmmssS')] = game;
             return game;
         },

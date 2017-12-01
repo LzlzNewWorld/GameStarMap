@@ -8,13 +8,18 @@ var GameCalendar = function(createTime){
     var gameTimestamp =  new Date(START_YEAR,0,1).getTime();
     this.createTimestamp = new Date(createTime).getTime();//游戏开始的现实时间戳
     this.__proto__={
-        getGameTime :()=>{
-            return new Date((Date.now()- this.createTimestamp)*timeScale + gameTimestamp);
-        },
         getGameYear : ()=>{
             var time = new Date((Date.now()- this.createTimestamp)*timeScale + gameTimestamp);
             return time.getFullYear()-START_YEAR;
+        },
+        getGameTime : (realTime) =>{
+            var stamp = realTime?realTime.getTime():Date.now();
+            return new Date((stamp- this.createTimestamp)*timeScale + gameTimestamp);
+        },
+        getRealTime : gameTime => {
+            return new Date((gameTime.getTime() - gameTimestamp)/timeScale + this.createTimestamp);
         }
+
     }
     
 }

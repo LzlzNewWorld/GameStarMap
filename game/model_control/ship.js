@@ -66,7 +66,8 @@ var Ship ={
         ship.DEF = type.DEF;
         ship.v = 0;//初始速度
         return ship;
-    }
+    },
+    
 }
 Ship.type = shipType;
 
